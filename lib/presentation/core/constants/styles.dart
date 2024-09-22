@@ -8,41 +8,41 @@ double screenHeight =
     MediaQueryData.fromView(WidgetsBinding.instance.window).size.height;
 
 class TextStyles {
-  static const TextStyle primaryFont = TextStyle(fontFamily: "Poppins");
+  static const TextStyle primaryFont = TextStyle(fontFamily: "SourceSansPro");
 
   static TextStyle _bold(double fontSize) {
     return primaryFont.copyWith(
         fontSize: fontSize.sp,
         fontWeight: FontWeight.w700,
-        color: AppColors.lightText1);
+        color: AppColors.neutralDark);
   }
 
   static TextStyle _semiBold(double fontSize) {
     return primaryFont.copyWith(
         fontSize: fontSize.sp,
         fontWeight: FontWeight.w600,
-        color: AppColors.lightText1);
+        color: AppColors.neutralDark);
   }
 
   static TextStyle _medium(double fontSize) {
     return primaryFont.copyWith(
         fontSize: fontSize.sp,
         fontWeight: FontWeight.w500,
-        color: AppColors.lightText1);
+        color: AppColors.neutralDark);
   }
 
   static TextStyle _regular(double fontSize) {
     return primaryFont.copyWith(
         fontSize: fontSize.sp,
         fontWeight: FontWeight.w400,
-        color: AppColors.lightText1);
+        color: AppColors.neutralDark);
   }
 
   static TextStyle _light(double fontSize) {
     return primaryFont.copyWith(
         fontSize: fontSize.sp,
         fontWeight: FontWeight.w300,
-        color: AppColors.lightText1);
+        color: AppColors.neutralDark);
   }
 
   static TextStyle bold48 = _bold(48);
