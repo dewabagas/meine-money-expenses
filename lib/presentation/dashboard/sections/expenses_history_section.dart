@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart'; // Import intl package
+import 'package:intl/intl.dart';
 import 'package:meine_money_expenses/domain/expenses/entities/expense.dart';
 import 'package:meine_money_expenses/presentation/core/constants/assets.dart';
 import 'package:meine_money_expenses/presentation/core/constants/styles.dart';
@@ -20,7 +20,6 @@ class ExpensesHistorySection extends StatefulWidget {
 class _ExpensesHistorySectionState extends State<ExpensesHistorySection> {
   @override
   Widget build(BuildContext context) {
-    // Group expenses by date
     Map<String, List<Expense>> groupedExpenses = {};
     for (var expense in widget.expenses) {
       final date = formatDate(expense.dateAsDateTime);
@@ -37,10 +36,8 @@ class _ExpensesHistorySectionState extends State<ExpensesHistorySection> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Date Header
-              Text(date, style: TextStyles.bold14), // Display formatted date
+              Text(date, style: TextStyles.bold14),
               20.0.height,
-              // List of expenses for the particular date
               ListView.builder(
                 itemCount: groupedExpenses[date]!.length,
                 shrinkWrap: true,
@@ -77,8 +74,22 @@ class _ExpensesHistorySectionState extends State<ExpensesHistorySection> {
   }
 
   String formatDate(DateTime date) {
-    final DateFormat formatter = DateFormat('d MMM yyyy');
-    return formatter.format(date);
+    final now = DateTime.now();
+    final formatter = DateFormat('d MMM yyyy');
+
+    if (isSameDay(date, now)) {
+      return 'Hari Ini';
+    } else if (isSameDay(date, now.subtract(Duration(days: 1)))) {
+      return 'Kemarin';
+    } else {
+      return formatter.format(date);
+    }
+  }
+
+  bool isSameDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
   }
 
   String _getIconPathForCategory(String category) {
@@ -102,7 +113,7 @@ class _ExpensesHistorySectionState extends State<ExpensesHistorySection> {
       case 'olahraga':
         return AppIcons.icSport;
       default:
-        return AppIcons.icCalendar; // Default icon if category is not found
+        return AppIcons.icCalendar;
     }
   }
 }
