@@ -91,7 +91,7 @@ class _ExpensesCategorySectionState extends State<ExpensesCategorySection> {
         return AppIcons.icFoodsRounded;
       case 'hiburan':
         return AppIcons.icEntertainmentRounded;
-      case 'pendidikan':
+      case 'edukasi':
         return AppIcons.icEducationRounded;
       case 'belanja':
         return AppIcons.icShoppingRounded;

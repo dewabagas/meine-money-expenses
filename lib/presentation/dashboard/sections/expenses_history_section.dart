@@ -98,20 +98,20 @@ class _ExpensesHistorySectionState extends State<ExpensesHistorySection> {
         return AppIcons.icFoodsColored;
       case 'hiburan':
         return AppIcons.icEntertainment;
-      case 'pendidikan':
-        return AppIcons.icEducation;
+      case 'edukasi':
+        return AppIcons.icEducationRounded;
       case 'belanja':
-        return AppIcons.icShopping;
+        return AppIcons.icShoppingRounded;
       case 'internet':
         return AppIcons.icInternetColored;
       case 'transport':
         return AppIcons.icTransportColored;
       case 'hadiah':
-        return AppIcons.icGift;
+        return AppIcons.icGiftRounded;
       case 'peralatan rumah':
-        return AppIcons.icHouseAppliance;
+        return AppIcons.icHouseApplianceRounded;
       case 'olahraga':
-        return AppIcons.icSport;
+        return AppIcons.icSportRounded;
       default:
         return AppIcons.icCalendar;
     }
