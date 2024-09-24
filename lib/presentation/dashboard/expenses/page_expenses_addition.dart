@@ -53,19 +53,13 @@ class _PageExpensesAdditionState extends State<PageExpensesAddition> {
 
   String? selectedCategory;
 
-  late final ExpenseRepository expenseRepository;
-  late final AddExpenseCubit addExpenseCubit;
-
   @override
   void initState() {
     super.initState();
-    // expenseRepository = ExpenseRepository(Hive.box('expenseBox'));
-    // addExpenseCubit = AddExpenseCubit(expenseRepository);
   }
 
   @override
   void dispose() {
-    addExpenseCubit.close();
     super.dispose();
   }
 

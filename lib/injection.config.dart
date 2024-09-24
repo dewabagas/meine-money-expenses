@@ -13,6 +13,8 @@ import 'package:hive/hive.dart' as _i979;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:meine_money_expenses/application/add_expense_cubit/add_expense_cubit.dart'
     as _i186;
+import 'package:meine_money_expenses/application/fetch_expenses__bloc/fetch_expenses_bloc.dart'
+    as _i635;
 import 'package:meine_money_expenses/application/fetch_expenses_cubit/fetch_expenses_cubit.dart'
     as _i392;
 import 'package:meine_money_expenses/domain/expenses/interfaces/i_expense_repository.dart'
@@ -37,6 +39,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i186.AddExpenseCubit(gh<_i722.IExpenseRepository>()));
     gh.factory<_i392.FetchExpensesCubit>(
         () => _i392.FetchExpensesCubit(gh<_i722.IExpenseRepository>()));
+    gh.factory<_i635.FetchExpensesBloc>(
+        () => _i635.FetchExpensesBloc(gh<_i722.IExpenseRepository>()));
     return this;
   }
 }

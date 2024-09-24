@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart'; // Import intl package
+import 'package:meine_money_expenses/domain/expenses/entities/expense.dart';
 import 'package:meine_money_expenses/presentation/core/constants/assets.dart';
 import 'package:meine_money_expenses/presentation/core/constants/styles.dart';
 import 'package:meine_money_expenses/presentation/core/utils/common_utils.dart';
@@ -8,39 +10,20 @@ import 'package:meine_money_expenses/presentation/core/utils/extension/double_ex
 import 'package:meine_money_expenses/presentation/shared/cards/card_general.dart';
 
 class ExpensesHistorySection extends StatefulWidget {
-  const ExpensesHistorySection({super.key});
+  final List<Expense> expenses;
+  const ExpensesHistorySection({super.key, required this.expenses});
 
   @override
   State<ExpensesHistorySection> createState() => _ExpensesHistorySectionState();
 }
 
 class _ExpensesHistorySectionState extends State<ExpensesHistorySection> {
-  final List<Map<String, dynamic>> expensesHistory = [
-    {
-      'icon': AppIcons.icFoodsColored,
-      'title': 'Ayam Geprek',
-      'total': 15000,
-      'date': '2024-09-22'
-    },
-    {
-      'icon': AppIcons.icTransportColored,
-      'title': 'Gojek',
-      'total': 15000,
-      'date': '2024-09-21'
-    },
-    {
-      'icon': AppIcons.icFoodsColored,
-      'title': 'Nasi Goreng',
-      'total': 20000,
-      'date': '2024-09-21'
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
-    Map<String, List<Map<String, dynamic>>> groupedExpenses = {};
-    for (var expense in expensesHistory) {
-      final date = expense['date'];
+    // Group expenses by date
+    Map<String, List<Expense>> groupedExpenses = {};
+    for (var expense in widget.expenses) {
+      final date = formatDate(expense.dateAsDateTime);
       if (!groupedExpenses.containsKey(date)) {
         groupedExpenses[date] = [];
       }
@@ -55,7 +38,7 @@ class _ExpensesHistorySectionState extends State<ExpensesHistorySection> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Date Header
-              Text(formatDate(date), style: TextStyles.bold14), // Format date
+              Text(date, style: TextStyles.bold14), // Display formatted date
               20.0.height,
               // List of expenses for the particular date
               ListView.builder(
@@ -74,12 +57,13 @@ class _ExpensesHistorySectionState extends State<ExpensesHistorySection> {
                       children: [
                         Row(
                           children: [
-                            SvgPicture.asset(item['icon']),
+                            SvgPicture.asset(
+                                _getIconPathForCategory(item.category)),
                             14.0.width,
-                            Text(item['title'], style: TextStyles.regular14),
+                            Text(item.name, style: TextStyles.regular14),
                           ],
                         ),
-                        Text('Rp. ${formatRupiah(item['total'])}',
+                        Text('Rp. ${formatRupiah(item.amount)}',
                             style: TextStyles.semibold14),
                       ],
                     ),
@@ -90,5 +74,35 @@ class _ExpensesHistorySectionState extends State<ExpensesHistorySection> {
           ),
       ],
     );
+  }
+
+  String formatDate(DateTime date) {
+    final DateFormat formatter = DateFormat('d MMM yyyy');
+    return formatter.format(date);
+  }
+
+  String _getIconPathForCategory(String category) {
+    switch (category.toLowerCase()) {
+      case 'makanan':
+        return AppIcons.icFoodsColored;
+      case 'hiburan':
+        return AppIcons.icEntertainment;
+      case 'pendidikan':
+        return AppIcons.icEducation;
+      case 'belanja':
+        return AppIcons.icShopping;
+      case 'internet':
+        return AppIcons.icInternetColored;
+      case 'transport':
+        return AppIcons.icTransportColored;
+      case 'hadiah':
+        return AppIcons.icGift;
+      case 'peralatan rumah':
+        return AppIcons.icHouseAppliance;
+      case 'olahraga':
+        return AppIcons.icSport;
+      default:
+        return AppIcons.icCalendar; // Default icon if category is not found
+    }
   }
 }

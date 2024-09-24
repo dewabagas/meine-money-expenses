@@ -20,14 +20,10 @@ class FetchExpensesCubit extends Cubit<FetchExpensesState> {
       final now = DateTime.now();
       final expenses =
           await expenseRepository.getExpensesByMonth(now.year, now.month);
-
-      // Hitung total pengeluaran hari ini
       final todayExpenses = expenses
           .where((expense) => isSameDay(
               expense.dateAsDateTime, now)) // Konversi String ke DateTime
           .fold(0.0, (sum, expense) => sum + expense.amount);
-
-      // Hitung total pengeluaran bulan ini
       final monthExpenses =
           expenses.fold(0.0, (sum, expense) => sum + expense.amount);
 

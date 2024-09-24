@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:meine_money_expenses/domain/expenses/entities/expense.dart';
 import 'package:meine_money_expenses/presentation/core/constants/assets.dart';
 import 'package:meine_money_expenses/presentation/core/constants/styles.dart';
 import 'package:meine_money_expenses/presentation/core/styles/app_colors.dart';
@@ -9,7 +12,9 @@ import 'package:meine_money_expenses/presentation/core/utils/extension/double_ex
 import 'package:meine_money_expenses/presentation/shared/cards/card_general.dart';
 
 class ExpensesCategorySection extends StatefulWidget {
-  const ExpensesCategorySection({super.key});
+  final List<Expense> expenses;
+
+  const ExpensesCategorySection({super.key, required this.expenses});
 
   @override
   State<ExpensesCategorySection> createState() =>
@@ -17,17 +22,10 @@ class ExpensesCategorySection extends StatefulWidget {
 }
 
 class _ExpensesCategorySectionState extends State<ExpensesCategorySection> {
-  final List<Map<String, dynamic>> expensesCategory = [
-    {'icon': AppIcons.icFoodsRounded, 'title': 'Makanan', 'total': 70000},
-    {'icon': AppIcons.icInternetRounded, 'title': 'Internet', 'total': 50000},
-    {
-      'icon': AppIcons.icTransportRounded,
-      'title': 'Transportasi',
-      'total': 20000
-    },
-  ];
   @override
   Widget build(BuildContext context) {
+    final groupedExpenses = _groupExpensesByCategory(widget.expenses);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -37,33 +35,33 @@ class _ExpensesCategorySectionState extends State<ExpensesCategorySection> {
               style: TextStyles.bold14),
         ),
         20.0.height,
-        // _buildFeaturedCards(expensesCategory),
         SizedBox(
-          height: 120.h,
+          height: 160.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
-            itemCount: expensesCategory.length,
+            itemCount: groupedExpenses.length,
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              final item = expensesCategory[index];
+              final category = groupedExpenses.keys.toList()[index];
+              final totalAmount = groupedExpenses[category]!
+                  .fold(0.0, (sum, expense) => sum + expense.amount);
+              final iconPath = _getIconPathForCategory(category);
+
               return CardGeneral(
                 width: 120.w,
-                margin: EdgeInsets.only(left: 20.w, top: 0.h, bottom: 0.h),
-                // padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                margin: EdgeInsets.only(left: 20.w, top: 10.h, bottom: 20.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SvgPicture.asset(
-                      item['icon'],
-                    ),
+                    SvgPicture.asset(iconPath),
                     12.0.height,
-                    Text(item['title'],
+                    Text(category,
                         style: TextStyles.regular12
                             .copyWith(color: AppColors.grey)),
                     8.0.height,
-                    Text('Rp. ${formatRupiah(item['total'])}',
+                    Text('Rp. ${formatRupiah(totalAmount.toInt())}',
                         style: TextStyles.bold12),
                   ],
                 ),
@@ -75,56 +73,42 @@ class _ExpensesCategorySectionState extends State<ExpensesCategorySection> {
     );
   }
 
-  Widget _buildFeaturedCards(List<Map<String, dynamic>> expense) {
-    final List<Widget> cards = [];
+  Map<String, List<Expense>> _groupExpensesByCategory(List<Expense> expenses) {
+    final Map<String, List<Expense>> grouped = {};
 
-    // Tambahkan setiap item expense ke dalam list widget cards
-    for (int i = 0; i < expense.length; i++) {
-      cards.add(
-        Padding(
-          padding: EdgeInsets.only(right: 16.w), // Tambahkan padding antar card
-          child: CardGeneral(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SvgPicture.asset(expense[i]['icon']),
-                12.0.height,
-                Text(
-                  expense[i]['title'],
-                  style: TextStyles.regular12.copyWith(color: AppColors.grey),
-                ),
-                8.0.height,
-                Text(
-                  'Rp. ${formatRupiah(expense[i]['total'])}',
-                  style: TextStyles.bold12,
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
+    for (var expense in expenses) {
+      if (grouped.containsKey(expense.category)) {
+        grouped[expense.category]!.add(expense);
+      } else {
+        grouped[expense.category] = [expense];
+      }
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Pengeluaran berdasarkan kategori', style: TextStyles.bold14),
-        20.0.height,
-        IntrinsicHeight(
-          child: Row(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  physics: const BouncingScrollPhysics(),
-                  child: Row(children: cards),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
+    return grouped;
+  }
+
+  String _getIconPathForCategory(String category) {
+    switch (category.toLowerCase()) {
+      case 'makanan':
+        return AppIcons.icFoodsRounded;
+      case 'hiburan':
+        return AppIcons.icEntertainmentRounded;
+      case 'pendidikan':
+        return AppIcons.icEducationRounded;
+      case 'belanja':
+        return AppIcons.icShoppingRounded;
+      case 'internet':
+        return AppIcons.icInternetRounded;
+      case 'transport':
+        return AppIcons.icTransportRounded;
+      case 'hadiah':
+        return AppIcons.icGiftRounded;
+      case 'peralatan rumah':
+        return AppIcons.icHouseApplianceRounded;
+      case 'olahraga':
+        return AppIcons.icSportRounded;
+      default:
+        return AppIcons.icCalendar;
+    }
   }
 }
