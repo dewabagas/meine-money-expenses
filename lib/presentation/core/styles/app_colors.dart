@@ -29,7 +29,7 @@ class AppColors {
   static const Color lightText2 = Color(0xffADB1B8);
   static const Color lightText3 = Color(0xffE8EBF1);
   static const Color strokeLight = Color(0xffE2E8F0);
-  static const Color lightGrey = Color(0xffF3F5F7);
+  static const Color lightGrey = Color(0xffE0E0E0);
   static const Color lightGrey2 = Color(0xffD1D4DC);
   static const Color lightGrey3 = Color(0xffF7FAFF);
   static const Color lightGrey4 = Color(0xffefedec);
@@ -38,7 +38,7 @@ class AppColors {
   static const Color lightCharcoal = Color(0xff404347);
   static const Color paleSky = Color(0xffEDF2F7);
   static const Color dividerLight = Color(0xffF1F4FA);
-  static const Color darkGrey = Color(0xff71757A);
+  static const Color darkGrey = Color(0xff4f4f4f);
   static const Color fillColor = Color(0xffF5F1F1);
 // Dark Mode
   static const Color bgDark = Color(0xff0E0F19);

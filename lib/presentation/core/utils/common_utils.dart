@@ -73,12 +73,8 @@ String formatErrorMessage(String errorMessage) {
   return errorMessage.replaceAll(RegExp(r'[\{\}]'), '');
 }
 
-String generateProductId() {
-  const String _chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  Random _rnd = Random();
-  String randomString = String.fromCharCodes(Iterable.generate(
-      5, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-  String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-  timestamp = timestamp.substring(timestamp.length - 3);
-  return randomString + timestamp;
+String formatFullDate(String dateString) {
+  DateTime date = DateTime.parse(dateString);
+  DateFormat formatter = DateFormat('EEEE, d MMMM yyyy', 'en_US');
+  return formatter.format(date);
 }

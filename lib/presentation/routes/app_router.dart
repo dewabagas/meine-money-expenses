@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:meine_money_expenses/presentation/core/pages/page_splash.dart';
+import 'package:meine_money_expenses/presentation/dashboard/expenses/page_expenses_addition.dart';
 import 'package:meine_money_expenses/presentation/dashboard/page_dashboard.dart';
 import 'package:meine_money_expenses/presentation/routes/app_route_paths.dart';
 
@@ -14,5 +15,8 @@ class AppRouter {
         GoRoute(
             path: RoutePaths.dashboard,
             builder: (context, state) => const PageDashboard()),
+        GoRoute(
+            path: RoutePaths.expensesAddition,
+            builder: (context, state) => const PageExpensesAddition()),
       ]);
 }

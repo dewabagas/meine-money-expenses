@@ -36,6 +36,11 @@ class AppIcons {
   static const String icTransport = 'assets/icons/ic_transport.svg';
   static const String icTransportColored =
       'assets/icons/ic_transport_colored.svg';
+
+  static const String icChevronRightRounded =
+      'assets/icons/ic_chevron_right_rounded.svg';
+
+  static const String icCalendar = 'assets/icons/ic_calendar.svg';
 }
 
 class AppImages {}
